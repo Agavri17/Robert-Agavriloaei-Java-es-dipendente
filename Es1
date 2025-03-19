@@ -1,0 +1,111 @@
+public class Dipendente {
+    
+    private String matricola;
+    private double stipendio;
+    private double straordinario;
+
+
+    public Dipendente(String matricola, double stipendio, double straordinario) {
+        this.matricola = matricola;
+        this.stipendio = stipendio;
+        this.straordinario = straordinario;
+    }
+
+    
+    public double getStipendio() {
+        return stipendio;
+    }
+
+    
+    public double paga(int oreStraordinario) {
+        return stipendio + (oreStraordinario * straordinario);
+    }
+
+    
+    public void stampa() {
+        System.out.println("Matricola: " + matricola);
+        System.out.println("Stipendio base: " + stipendio);
+        System.out.println("Compenso straordinario per ora: " + straordinario);
+    }
+
+  
+    public static void main(String[] args) {
+        Dipendente dip = new Dipendente("12345", 1500.50, 20.75);
+        dip.stampa();
+        System.out.println("Stipendio totale con 10 ore di straordinario: " + dip.paga(10));
+    }
+}
+
+
+
+
+//Es.2
+public class DipendenteA extends Dipendente {
+   
+    private int malattia;
+
+   
+    public DipendenteA(String matricola, double stipendio, double straordinario) {
+        super(matricola, stipendio, straordinario);
+        this.malattia = 0; 
+    }
+
+   
+    public void prendiMalattia(int giorni) {
+        this.malattia += giorni;
+    }
+
+    
+    @Override
+    public double paga(int oreStraordinario) {
+        double p = super.paga(oreStraordinario); // Calcolo della paga base + straordinari
+        if (malattia == 0) {
+            return p;
+        } else {
+            return p - (malattia * 15.0); // Sottrae il costo della malattia
+        }
+    }
+
+    
+    public void stampaMalattia() {
+        System.out.println("Giorni di malattia: " + malattia);
+    }
+
+    public static void main(String[] args) {
+        DipendenteA dipA = new DipendenteA("67890", 1600.75, 25.50);
+        dipA.stampa();
+        System.out.println("Stipendio totale con 8 ore di straordinario: " + dipA.paga(8));
+        
+        dipA.prendiMalattia(3);
+        dipA.stampaMalattia();
+        System.out.println("Stipendio dopo malattia: " + dipA.paga(8));
+    }
+}
+
+//Es.3
+public class CalcolaStipendi {
+    public static void main(String[] args) {
+     
+        Dipendente dip1 = new Dipendente("00309", 1000.00, 7.50);
+        
+        double stipendioDip1 = dip1.paga(10);
+        System.out.println("Stipendio Dipendente 00309 con straordinari: " + stipendioDip1);
+        
+        
+        System.out.println("Stipendio base Dipendente 00309: " + dip1.getStipendio());
+
+        System.out.println("-----------------------------------");
+
+       
+        DipendenteA dip2 = new DipendenteA("00201", 1500.00, 8.50);
+        
+    
+        dip2.prendiMalattia(5);
+        
+       
+        double stipendioDip2 = dip2.paga(3);
+        System.out.println("Stipendio DipendenteA 00201 dopo malattia e straordinari: " + stipendioDip2);
+        
+        dip2.stampaMalattia();
+    }
+}
